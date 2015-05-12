@@ -1,7 +1,16 @@
 var dao = require("cloud/dao.js");
 // Use AV.Cloud.define to define as many cloud functions as you want.
 // For example:
-AV.Cloud.define("hello", function(request, response) {
+AV.Cloud.define("classification", function(request, response) {
+  response.success("Hello world!");
+});
+
+
+AV.Cloud.define("training", function(request, response) {
+  tag       = request.params.modelTag;
+  start_time = request.params.;
+  end_time   = request.params.end_time;
+  scale      = request.params.time_scale;
   response.success("Hello world!");
 });
 
@@ -81,10 +90,7 @@ var hmm_params = {
     [ 0.1950282 , 0.09337093, 0.0950282 , 0.61657267]
   ]
 };
-//dao._updateGMM(gmm_params, "dining_out_in_chinese_restaurant", 4, 4, 0.01, "full", "It's a first gmm params.");
-//dao._updateHMM(hmm_params, "dining_out_in_chinese_restaurant", 4, "It's a first hmm params.");
-//dao.updateGMMHMM(gmm_params, hmm_params, "dining_out_in_chinese_restaurant", 4, 4, "full", "It's the first gmm & hmm params.");
-//res = dao._getRecentGMM("dining_out_in_chinese_restaurant");
-//res.then(function(res){console.log(res);});
-res = dao.getRecentGMMHMM("dining_out_in_chinese_restaurant");
-res.then(function(res){console.log(res);});
+
+//dao.updateGMMHMM("random_sample_1000", gmm_params, hmm_params, "dining_out_in_chinese_restaurant", 4, 4, "full", "It's a trial for gmmhmm update");
+//res = dao.getRecentGMMHMM("random_sample_1000", "dining_out_in_chinese_restaurant");
+//res.then(function(res){console.log(res)});

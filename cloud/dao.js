@@ -127,11 +127,12 @@ exports.getRecentGMM = function (event_label){
     return promise;
 };
 
-exports.getRecentGMMHMM = function (event_label){
+exports.getRecentGMMHMM = function (tag, event_label){
     var promise = new AV.Promise();
     var GMMHMM = AV.Object.extend("gmmhmm");
     var query = new AV.Query(GMMHMM);
     query.equalTo("eventLabel", event_label);
+    query.equalTo("tag", tag);
     query.descending("timestamp");
     query.include("gmm");
     query.include("hmm");
@@ -145,6 +146,8 @@ exports.getRecentGMMHMM = function (event_label){
                 var request_count = result.get("requestCount");
                 var gmm = result.get("gmm")["attributes"];
                 var hmm = result.get("hmm")["attributes"];
+                var gmm_id = result.get("gmm").id;
+                var hmm_id = result.get("hmm").id;
                 var description = result.get("description");
                 var timestamp   = result.get("timestamp");
                 gmmhmm = {
@@ -152,6 +155,8 @@ exports.getRecentGMMHMM = function (event_label){
                     "requestCount": request_count,
                     "gmm": gmm,
                     "hmm": hmm,
+                    "gmmId": gmm_id,
+                    "hmmId": hmm_id,
                     "description": description,
                     "timestamp": timestamp
                 };
@@ -174,7 +179,7 @@ exports.updateHMM = function(hmm_params, event_label, n_component, description){
     _updateHMM(hmm_params, event_label, n_component, description);
 };
 
-exports.updateGMMHMM = function (gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description){
+exports.updateGMMHMM = function (tag, gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description){
     var promises = [];
     promises.push(_updateGMM(gmm_params, event_label, n_mix, covariance_type, description));
     promises.push(_updateHMM(hmm_params, event_label, n_component, description));
@@ -189,6 +194,7 @@ exports.updateGMMHMM = function (gmm_params, hmm_params, event_label, n_componen
             var gmm_pointer = AV.Object.createWithoutData("gmm", gmm_id);
             var hmm_pointer = AV.Object.createWithoutData("hmm", hmm_id);
             // Set gmmhmm's parameters.
+            _gmmhmm.set("tag", tag);
             _gmmhmm.set("gmm", gmm_pointer);
             _gmmhmm.set("hmm", hmm_pointer);
             _gmmhmm.set("eventLabel", event_label);
