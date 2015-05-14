@@ -150,6 +150,7 @@ exports.getRecentGMMHMM = function (tag, event_label){
                 var hmm_id = result.get("hmm").id;
                 var description = result.get("description");
                 var timestamp   = result.get("timestamp");
+                var config = result.get("config");
                 gmmhmm = {
                     "eventLabel": event_label,
                     "requestCount": request_count,
@@ -158,7 +159,8 @@ exports.getRecentGMMHMM = function (tag, event_label){
                     "gmmId": gmm_id,
                     "hmmId": hmm_id,
                     "description": description,
-                    "timestamp": timestamp
+                    "timestamp": timestamp,
+                    "config": config
                 };
             });
             promise.resolve(gmmhmm);
@@ -179,7 +181,7 @@ exports.updateHMM = function(hmm_params, event_label, n_component, description){
     _updateHMM(hmm_params, event_label, n_component, description);
 };
 
-exports.updateGMMHMM = function (tag, gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description){
+exports.updateGMMHMM = function (tag, gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description, config){
     var promises = [];
     promises.push(_updateGMM(gmm_params, event_label, n_mix, covariance_type, description));
     promises.push(_updateHMM(hmm_params, event_label, n_component, description));
@@ -201,6 +203,7 @@ exports.updateGMMHMM = function (tag, gmm_params, hmm_params, event_label, n_com
             _gmmhmm.set("requestCount", 0);
             _gmmhmm.set("description", description);
             _gmmhmm.set("timestamp", timestamp);
+            _gmmhmm.set("config", config);
             _gmmhmm.save().then(
                 function (gmmhmm){
                     console.log("New GMMHMM object created with objectId: " + gmmhmm.id);

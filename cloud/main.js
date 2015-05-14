@@ -1,4 +1,5 @@
-var dao = require("cloud/dao.js");
+var dao = require("cloud/dao/dao_model.js");
+var method = require("cloud/method.js");
 // Use AV.Cloud.define to define as many cloud functions as you want.
 // For example:
 AV.Cloud.define("updateGMM", function (request, response) {
@@ -55,6 +56,7 @@ AV.Cloud.define("updateGMMHMM", function (request, response) {
         n_mix = request.params.nMix,
         covariance_type = request.params.covarianceType,
         description = request.params.description;
+        config = request.params.config;
     dao.updateGMMHMM(tag, gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description).then(
         function (gmmhmm_id) {
             response.success({
@@ -132,3 +134,5 @@ AV.Cloud.define("getRecentHMM", function (request, response) {
     );
 });
 
+
+method.train("random_sample_1000", "dining_out_in_chinese_restaurant");
