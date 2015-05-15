@@ -141,29 +141,47 @@ exports.getRecentGMMHMM = function (tag, event_label){
         function (results){
             console.log("Successfully retrieved " + results.length + " HMM.");
             var gmmhmm = {};
-            results.forEach(function (result){
-                var event_label   = result.get("eventLabel");
-                var request_count = result.get("requestCount");
-                var gmm = result.get("gmm")["attributes"];
-                var hmm = result.get("hmm")["attributes"];
-                var gmm_id = result.get("gmm").id;
-                var hmm_id = result.get("hmm").id;
-                var description = result.get("description");
-                var timestamp   = result.get("timestamp");
-                var config = result.get("config");
-                gmmhmm = {
-                    "eventLabel": event_label,
-                    "requestCount": request_count,
-                    "gmm": gmm,
-                    "hmm": hmm,
-                    "gmmId": gmm_id,
-                    "hmmId": hmm_id,
-                    "description": description,
-                    "timestamp": timestamp,
-                    "config": config
-                };
-            });
-            promise.resolve(gmmhmm);
+            if (results.length == 0){
+                promise.resolve(undefined);
+            }
+            else {
+                results.forEach(function (result) {
+                    var event_label = result.get("eventLabel");
+                    var request_count = result.get("requestCount");
+                    var gmm_id = result.get("gmm").id;
+                    var hmm_id = result.get("hmm").id;
+                    var description = result.get("description");
+                    var timestamp = result.get("timestamp");
+                    // Useful info.
+                    var gmm = result.get("gmm")["attributes"];
+                    var hmm = result.get("hmm")["attributes"];
+                    var config = result.get("config");
+                    var model = {};
+                    model["nComponent"] = hmm["nComponent"];
+                    model["covarianceType"] = gmm["covarianceType"];
+                    model["nMix"] = gmm["nMix"];
+                    //model["nIter"] = 50;
+                    // TODO: revise start prob and trans mat to prior.
+                    model["startProbPrior"] = hmm["params"]["startProb"];
+                    model["transMatPrior"] = hmm["params"]["transMat"];
+                    model["startProb"] = hmm["params"]["startProb"];
+                    model["transMat"] = hmm["params"]["transMat"];
+                    model["gmms"] = gmm["params"]["params"];
+
+                    gmmhmm = {
+                        "eventLabel": event_label,
+                        "requestCount": request_count,
+                        "gmmId": gmm_id,
+                        "hmmId": hmm_id,
+                        "description": description,
+                        "timestamp": timestamp,
+                        // Useful info.
+                        "model": model,
+                        "config": config
+                    };
+                });
+                promise.resolve(gmmhmm);
+            }
         },
         function (error_info){
             console.log("Error occurs! " + error_info.code + ' ' + error_info.message);

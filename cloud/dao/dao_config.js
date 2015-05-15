@@ -11,15 +11,20 @@ exports.getConfig = function (){
     query.find().then(
         function (results){
             console.log("Successfully retrieved " + results.length + " configs.");
-            var config_names = [];
-            var config_values = [];
-            results.forEach(function (result){
-                var name  = result.get("name");
-                var value = result.get("value");
-                config_names.push(name);
-                config_values.push(value);
-            });
-            promise.resolve(config_names, config_values);
+            if (results.length == 0){
+                promise.resolve(undefined);
+            }
+            else {
+                var config_names = [];
+                var config_values = [];
+                results.forEach(function (result) {
+                    var name = result.get("name");
+                    var value = result.get("value");
+                    config_names.push(name);
+                    config_values.push(value);
+                });
+                promise.resolve(config_names, config_values);
+            }
         },
         function (error_info){
             console.log("Error occurs! " + error_info.code + ' ' + error_info.message);
