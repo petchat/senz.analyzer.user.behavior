@@ -234,7 +234,7 @@ var obs = [[{"motion": "sitting", "sound": "talking", "location": "chinese_resta
         {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
         {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
         {"motion": "walking", "sound": "laugh", "location": "glass_store"}]];
-//method.train("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", "test for node js", 50, obs);
+method.train("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", "test for node js", 50, obs);
 //method.train("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", "test for random", 50, undefined, 10, 200);
-var seq = [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "others", "location": "outdoor"}, {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"}];
-method.classify("GMMHMM", seq, "random_generated_base_model");
+//var seq = [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "others", "location": "outdoor"}, {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"}];
+//method.classify("GMMHMM", seq, "random_generated_base_model");
