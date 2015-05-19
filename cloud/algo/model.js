@@ -54,8 +54,12 @@ exports.Classifier = function (algo_type, tag, event_labels){
             function (err, httpResponse, body) {
                 console.log('Received result successfully.');
                 if (body["code"] == 0) {
-                    var result = body['result'];
-                    console.log(result);
+                    var probs = body['result'];
+                    var result = {};
+                    for (var i=0; i<probs.length; i++){
+                        result[_e_labels[i]] = probs[i];
+                    }
+                    //console.log(result);
                     promise.resolve(result);
                 }
                 else {
