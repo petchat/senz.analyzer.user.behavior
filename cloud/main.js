@@ -220,191 +220,191 @@ AV.Cloud.define("classifySingleSeq", function (request, response) {
 
 
 
-var obs = [[{"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-    {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
-    {"motion": "walking", "sound": "tableware", "location": "chinese_restaurant"},
-    {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
-    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-    {"motion": "sitting", "sound": "tableware", "location": "residence"},
-    {"motion": "sitting", "sound": "others", "location": "glass_store"}],
-    [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
-        {"motion": "sitting", "sound": "laugh", "location": "glass_store"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
-        {"motion": "walking", "sound": "laugh", "location": "glass_store"},
-        {"motion": "walking", "sound": "keyboard", "location": "glass_store"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "others", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"}],
-    [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
-        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "tableware", "location": "residence"},
-        {"motion": "walking", "sound": "others", "location": "glass_store"},
-        {"motion": "sitting", "sound": "laugh", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "keyboard", "location": "residence"}],
-    [{"motion": "walking", "sound": "talking", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "residence"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "laugh", "location": "residence"},
-        {"motion": "walking", "sound": "tableware", "location": "chinese_restaurant"}],
-    [{"motion": "walking", "sound": "tableware", "location": "glass_store"},
-        {"motion": "walking", "sound": "laugh", "location": "glass_store"},
-        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"}],
-    [{"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "others", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "residence"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"}],
-    [{"motion": "sitting", "sound": "keyboard", "location": "glass_store"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "talking", "location": "glass_store"},
-        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"}],
-    [{"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "keyboard", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "others", "location": "glass_store"}],
-    [{"motion": "sitting", "sound": "tableware", "location": "glass_store"},
-        {"motion": "walking", "sound": "others", "location": "residence"},
-        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"}],
-    [{"motion": "walking", "sound": "talking", "location": "glass_store"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
-        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
-        {"motion": "walking", "sound": "laugh", "location": "glass_store"}]];
+//var obs = [[{"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//    {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
+//    {"motion": "walking", "sound": "tableware", "location": "chinese_restaurant"},
+//    {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
+//    {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//    {"motion": "sitting", "sound": "tableware", "location": "residence"},
+//    {"motion": "sitting", "sound": "others", "location": "glass_store"}],
+//    [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "laugh", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
+//        {"motion": "walking", "sound": "laugh", "location": "glass_store"},
+//        {"motion": "walking", "sound": "keyboard", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "others", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"}],
+//    [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "tableware", "location": "residence"},
+//        {"motion": "walking", "sound": "others", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "laugh", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "keyboard", "location": "residence"}],
+//    [{"motion": "walking", "sound": "talking", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "residence"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "laugh", "location": "residence"},
+//        {"motion": "walking", "sound": "tableware", "location": "chinese_restaurant"}],
+//    [{"motion": "walking", "sound": "tableware", "location": "glass_store"},
+//        {"motion": "walking", "sound": "laugh", "location": "glass_store"},
+//        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"}],
+//    [{"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "others", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "residence"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"}],
+//    [{"motion": "sitting", "sound": "keyboard", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "talking", "location": "glass_store"},
+//        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"}],
+//    [{"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "keyboard", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "others", "location": "glass_store"}],
+//    [{"motion": "sitting", "sound": "tableware", "location": "glass_store"},
+//        {"motion": "walking", "sound": "others", "location": "residence"},
+//        {"motion": "sitting", "sound": "tableware", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"}],
+//    [{"motion": "walking", "sound": "talking", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "glass_store"},
+//        {"motion": "sitting", "sound": "others", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
+//        {"motion": "walking", "sound": "laugh", "location": "glass_store"}]];
 
 
 //m = method.trainWithRandomObs("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", 10, 100);
 //m = method.trainWithSpecificObs("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", obs, "test for UpdateModel");
 
-var senz_prob_list = {
-    "probSenzList": [
-        {
-            "motion": {
-                "Riding": 0.1,
-                "Walking": 0.8,
-                "Running": 0.0001,
-                "Driving": 0.0001,
-                "Sitting": 0.0998
-            },
-            "location": {
-                "chinese_restaurant": 0.5,
-                "glass_store": 0.3,
-                "home": 0.2
-            },
-            "sound": {
-                "talk": 0.7,
-                "tree": 0.2
-            },
-            "timestamp": 1234567
-        },
-        {
-            "motion": {
-                "Riding": 0.1,
-                "Walking": 0.8,
-                "Running": 0.0001,
-                "Driving": 0.0001,
-                "Sitting": 0.0998
-            },
-            "location": {
-                "chinese_restaurant": 0.5,
-                "glass_store": 0.3,
-                "home": 0.2
-            },
-            "sound": {
-                "talk": 0.7,
-                "tree": 0.2
-            },
-            "timestamp": 1345678
-        },
-        {
-            "motion": {
-                "Riding": 0.1,
-                "Walking": 0.8,
-                "Running": 0.0001,
-                "Driving": 0.0001,
-                "Sitting": 0.0998
-            },
-            "location": {
-                "chinese_restaurant": 0.5,
-                "glass_store": 0.3,
-                "home": 0.2
-            },
-            "sound": {
-                "talk": 0.7,
-                "tree": 0.2
-            },
-            "timestamp": 1456789
-        },
-        {
-            "motion": {
-                "Riding": 0.1,
-                "Walking": 0.8,
-                "Running": 0.0001,
-                "Driving": 0.0001,
-                "Sitting": 0.0998
-            },
-            "location": {
-                "chinese_restaurant": 0.5,
-                "glass_store": 0.3,
-                "home": 0.2
-            },
-            "sound": {
-                "talk": 0.7,
-                "tree": 0.2
-            },
-            "timestamp": 1567890
-        }
-    ],
-    "strategy": "SELECT_MAX_PROB"
-};
+//var senz_prob_list = {
+//    "probSenzList": [
+//        {
+//            "motion": {
+//                "Riding": 0.1,
+//                "Walking": 0.8,
+//                "Running": 0.0001,
+//                "Driving": 0.0001,
+//                "Sitting": 0.0998
+//            },
+//            "location": {
+//                "chinese_restaurant": 0.5,
+//                "glass_store": 0.3,
+//                "home": 0.2
+//            },
+//            "sound": {
+//                "talk": 0.7,
+//                "tree": 0.2
+//            },
+//            "timestamp": 1234567
+//        },
+//        {
+//            "motion": {
+//                "Riding": 0.1,
+//                "Walking": 0.8,
+//                "Running": 0.0001,
+//                "Driving": 0.0001,
+//                "Sitting": 0.0998
+//            },
+//            "location": {
+//                "chinese_restaurant": 0.5,
+//                "glass_store": 0.3,
+//                "home": 0.2
+//            },
+//            "sound": {
+//                "talk": 0.7,
+//                "tree": 0.2
+//            },
+//            "timestamp": 1345678
+//        },
+//        {
+//            "motion": {
+//                "Riding": 0.1,
+//                "Walking": 0.8,
+//                "Running": 0.0001,
+//                "Driving": 0.0001,
+//                "Sitting": 0.0998
+//            },
+//            "location": {
+//                "chinese_restaurant": 0.5,
+//                "glass_store": 0.3,
+//                "home": 0.2
+//            },
+//            "sound": {
+//                "talk": 0.7,
+//                "tree": 0.2
+//            },
+//            "timestamp": 1456789
+//        },
+//        {
+//            "motion": {
+//                "Riding": 0.1,
+//                "Walking": 0.8,
+//                "Running": 0.0001,
+//                "Driving": 0.0001,
+//                "Sitting": 0.0998
+//            },
+//            "location": {
+//                "chinese_restaurant": 0.5,
+//                "glass_store": 0.3,
+//                "home": 0.2
+//            },
+//            "sound": {
+//                "talk": 0.7,
+//                "tree": 0.2
+//            },
+//            "timestamp": 1567890
+//        }
+//    ],
+//    "strategy": "SELECT_MAX_PROB"
+//};
 
 //algo.prob2muti(senz_prob_list);
