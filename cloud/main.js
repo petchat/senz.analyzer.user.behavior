@@ -1,5 +1,7 @@
 var dao = require("cloud/dao/dao_model.js");
 var method = require("cloud/method.js");
+var algo = require("cloud/algo/others.js");
+
 // Use AV.Cloud.define to define as many cloud functions as you want.
 // For example:
 AV.Cloud.define("updateGMM", function (request, response) {
@@ -56,7 +58,7 @@ AV.Cloud.define("updateGMMHMM", function (request, response) {
         n_mix = request.params.nMix,
         covariance_type = request.params.covarianceType,
         description = request.params.description;
-        config = request.params.config;
+    config = request.params.config;
     dao.updateGMMHMM(tag, gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description, config).then(
         function (gmmhmm_id) {
             response.success({
@@ -234,7 +236,91 @@ var obs = [[{"motion": "sitting", "sound": "talking", "location": "chinese_resta
         {"motion": "walking", "sound": "talking", "location": "chinese_restaurant"},
         {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"},
         {"motion": "walking", "sound": "laugh", "location": "glass_store"}]];
-method.train("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", "test for node js", 50, obs);
-//method.train("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", "test for random", 50, undefined, 10, 200);
-//var seq = [{"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "others", "location": "outdoor"}, {"motion": "walking", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "laugh", "location": "chinese_restaurant"}, {"motion": "sitting", "sound": "talking", "location": "chinese_restaurant"}];
-//method.classify("GMMHMM", seq, "random_generated_base_model");
+
+
+//m = method.trainWithRandomObs("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", 10, 100);
+//m = method.trainWithSpecificObs("GMMHMM", "random_generated_base_model", "dining.chineseRestaurant", obs, "test for UpdateModel");
+
+var senz_prob_list = {
+    "probSenzList": [
+        {
+            "motion": {
+                "Riding": 0.1,
+                "Walking": 0.8,
+                "Running": 0.0001,
+                "Driving": 0.0001,
+                "Sitting": 0.0998
+            },
+            "location": {
+                "chinese_restaurant": 0.5,
+                "glass_store": 0.3,
+                "home": 0.2
+            },
+            "sound": {
+                "talk": 0.7,
+                "tree": 0.2
+            },
+            "timestamp": 1234567
+        },
+        {
+            "motion": {
+                "Riding": 0.1,
+                "Walking": 0.8,
+                "Running": 0.0001,
+                "Driving": 0.0001,
+                "Sitting": 0.0998
+            },
+            "location": {
+                "chinese_restaurant": 0.5,
+                "glass_store": 0.3,
+                "home": 0.2
+            },
+            "sound": {
+                "talk": 0.7,
+                "tree": 0.2
+            },
+            "timestamp": 1345678
+        },
+        {
+            "motion": {
+                "Riding": 0.1,
+                "Walking": 0.8,
+                "Running": 0.0001,
+                "Driving": 0.0001,
+                "Sitting": 0.0998
+            },
+            "location": {
+                "chinese_restaurant": 0.5,
+                "glass_store": 0.3,
+                "home": 0.2
+            },
+            "sound": {
+                "talk": 0.7,
+                "tree": 0.2
+            },
+            "timestamp": 1456789
+        },
+        {
+            "motion": {
+                "Riding": 0.1,
+                "Walking": 0.8,
+                "Running": 0.0001,
+                "Driving": 0.0001,
+                "Sitting": 0.0998
+            },
+            "location": {
+                "chinese_restaurant": 0.5,
+                "glass_store": 0.3,
+                "home": 0.2
+            },
+            "sound": {
+                "talk": 0.7,
+                "tree": 0.2
+            },
+            "timestamp": 1567890
+        }
+    ],
+    "strategy": "SELECT_MAX_PROB"
+};
+
+algo.prob2muti(senz_prob_list);

@@ -1,6 +1,8 @@
 /**
  * Created by MeoWoodie on 5/14/15.
  */
+var util = require("cloud/util.js");
+
 exports.getConfig = function (){
     var promise = new AV.Promise();
     var Config = AV.Object.extend("config");
@@ -23,7 +25,8 @@ exports.getConfig = function (){
                     config_names.push(name);
                     config_values.push(value);
                 });
-                promise.resolve(config_names, config_values);
+                var processed_config = util.processConfig(config_names, config_values);
+                promise.resolve(processed_config);
             }
         },
         function (error_info){

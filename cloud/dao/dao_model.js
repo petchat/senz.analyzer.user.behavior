@@ -162,11 +162,21 @@ exports.getRecentGMMHMM = function (tag, event_label){
                     model["nMix"] = gmm["nMix"];
                     //model["nIter"] = 50;
                     // TODO: revise start prob and trans mat to prior.
-                    model["startProbPrior"] = hmm["params"]["startProb"];
-                    model["transMatPrior"] = hmm["params"]["transMat"];
-                    model["startProb"] = hmm["params"]["startProb"];
-                    model["transMat"] = hmm["params"]["transMat"];
-                    model["gmms"] = gmm["params"]["params"];
+                    //model["startProbPrior"] = hmm["params"]["startProb"];
+                    //model["transMatPrior"] = hmm["params"]["transMat"];
+                    //model["startProb"] = hmm["params"]["startProb"];
+                    //model["transMat"] = hmm["params"]["transMat"];
+                    //model["gmms"] = gmm["params"]["params"];
+                    model["hmmParams"] = {};
+                    model["hmmParams"]["startProb"] = hmm["params"]["startProb"];
+                    model["hmmParams"]["transMat"]  = hmm["params"]["transMat"];
+                    model["hmmParams"]["startProbPrior"] = hmm["params"]["startProb"];
+                    model["hmmParams"]["transMatPrior"]  = hmm["params"]["transMat"];
+
+                    model["gmmParams"] = {};
+                    model["gmmParams"]["params"] = gmm["params"]["params"];
+                    model["gmmParams"]["covarianceType"] = gmm["covarianceType"];
+                    model["gmmParams"]["nMix"]   = gmm["nMix"];
 
                     gmmhmm = {
                         "eventLabel": event_label,
@@ -199,8 +209,13 @@ exports.updateHMM = function(hmm_params, event_label, n_component, description){
     _updateHMM(hmm_params, event_label, n_component, description);
 };
 
-exports.updateGMMHMM = function (tag, gmm_params, hmm_params, event_label, n_component, n_mix, covariance_type, description, config){
+exports.updateGMMHMM = function (tag, event_label, model, config, description){
     var promises = [];
+    var gmm_params = model["gmmParams"],
+        hmm_params = model["hmmParams"],
+        n_component = model["nComponent"],
+        n_mix = model["nMix"],
+        covariance_type = model["covarianceType"];
     promises.push(_updateGMM(gmm_params, event_label, n_mix, covariance_type, description));
     promises.push(_updateHMM(hmm_params, event_label, n_component, description));
     return AV.Promise.when(promises).then(
