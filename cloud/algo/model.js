@@ -98,6 +98,8 @@ exports.Model = function (algo_type, tag, event_label) {
             function (model){
                 _model  = model["model"];
                 _config = model["config"];
+                //console.log("get");
+                //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
                 data["model"]  = _model;
                 data["config"] = _config;
                 promise.resolve(model);
@@ -110,6 +112,8 @@ exports.Model = function (algo_type, tag, event_label) {
 
     var _updateModel = function (description){
         var promise = new AV.Promise();
+        //console.log("update");
+        //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
         return Algo[algo_type]["updateModel"](_tag, _e_label, _model, _config, description).then(
             function (model_id){
                 promise.resolve(model_id);
@@ -133,8 +137,10 @@ exports.Model = function (algo_type, tag, event_label) {
                 console.log('Received result successfully.');
                 if (body["code"] == 0) {
                     var result = body['result'];
-                    // Update the model.
+                    // Update the model
                     _model = result;
+                    //console.log("train");
+                    //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
                     promise.resolve(result);
                 }
                 else {
