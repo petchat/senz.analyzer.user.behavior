@@ -4,9 +4,9 @@ exports.Prob2muti = "http://127.0.0.1:5000/senzlist/prob2muti/";
 
 exports.Algo = {
     GMMHMM: {
-        train: "http://127.0.0.1:9010/trainingGMMHMM/",
-        trainRandomly: "http://127.0.0.1:9010/trainingGMMHMMrandomly/",
-        classify: "http://127.0.0.1:9010/classifyGMMHMM/",
+        train: "http://120.27.30.239:9047/trainingGMMHMM/",
+        trainRandomly: "http://120.27.30.239:9047/trainingGMMHMMrandomly/",
+        classify: "http://120.27.30.239:9047/classifyGMMHMM/",
         getModel: dao.getRecentGMMHMM,
         updateModel: dao.updateGMMHMM
     }
