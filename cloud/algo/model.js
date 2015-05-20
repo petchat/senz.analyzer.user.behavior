@@ -4,6 +4,7 @@
 
 var req    = require("request");
 var config = require("cloud/config.js");
+var dao_config = require("cloud/dao/dao_config.js");
 
 var Algo = config.Algo;
 
@@ -128,6 +129,31 @@ exports.Model = function (algo_type, tag, event_label) {
         );
     };
 
+    var _initModel = function (tag, event_label, n_component, hmm_params, another_params){
+        // Init private members.
+        _tag = tag;
+        _e_label = event_label;
+
+        var description = "It's initiation of this model.";
+        return dao_config.getConfig().then(
+            function (config){
+                var model_config = {
+                    "logType": config["log_type"],
+                    "eventType": config["events_type"],
+                    "motionType": config["motion_type"],
+                    "soundType": config["sound_level1_type"],
+                    "locationType": config["location_level2_type"]
+                };
+                return Algo[algo_type]["initModel"](tag, event_label, n_component, hmm_params, another_params, model_config, description);
+            },
+            function (error){
+                var failed = new AV.Promise();
+                failed.reject(error);
+                return failed;
+            }
+        );
+    };
+
     var _train = function (obs, n_iter){
         data["obs"] = obs;
         data["model"]["nIter"] = n_iter;
@@ -191,7 +217,9 @@ exports.Model = function (algo_type, tag, event_label) {
         trainRandomly: _trainRandomly,
         getModel: _getRecentModel,
         updateModel: _updateModel,
+        initModel: _initModel,
         model: _model,
-        config: _config
+        config: _config,
+        tag: _tag
     }
 };

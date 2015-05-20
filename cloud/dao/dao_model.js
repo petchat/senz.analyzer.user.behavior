@@ -2,8 +2,6 @@
  * Created by MeoWoodie on 5/11/15.
  */
 
-
-
 var _updateGMM = function (gmm_params, event_label, n_mix, covariance_type, description){
     var promise = new AV.Promise();
     var GMM = AV.Object.extend("gmm");
@@ -53,6 +51,49 @@ var _updateHMM = function (hmm_params, event_label, n_component, description){
         }
     );
     return promise;
+};
+
+var _updateGMMHMM = function (tag, event_label, model, config, description){
+    var promises = [];
+    var gmm_params = model["gmmParams"],
+        hmm_params = model["hmmParams"],
+        n_component = model["nComponent"],
+        n_mix = model["nMix"],
+        covariance_type = model["covarianceType"];
+    promises.push(_updateGMM(gmm_params, event_label, n_mix, covariance_type, description));
+    promises.push(_updateHMM(hmm_params, event_label, n_component, description));
+    return AV.Promise.when(promises).then(
+        function (gmm_id, hmm_id){
+            var promise = new AV.Promise();
+            var GMMHMM = AV.Object.extend("gmmhmm");
+            var _gmmhmm = new GMMHMM();
+            // Get current time
+            var timestamp = new Date();
+            // Create pointer for gmm and hmm.
+            var gmm_pointer = AV.Object.createWithoutData("gmm", gmm_id);
+            var hmm_pointer = AV.Object.createWithoutData("hmm", hmm_id);
+            // Set gmmhmm's parameters.
+            _gmmhmm.set("tag", tag);
+            _gmmhmm.set("gmm", gmm_pointer);
+            _gmmhmm.set("hmm", hmm_pointer);
+            _gmmhmm.set("eventLabel", event_label);
+            _gmmhmm.set("requestCount", 0);
+            _gmmhmm.set("description", description);
+            _gmmhmm.set("timestamp", timestamp);
+            _gmmhmm.set("config", config);
+            _gmmhmm.save().then(
+                function (gmmhmm){
+                    console.log("New GMMHMM object created with objectId: " + gmmhmm.id);
+                    promise.resolve(gmmhmm.id);
+                },
+                function (error_info) {
+                    console.log("Failed to create new GMMHMM object, with error code: " + error_info.code + " " + error_info.message);
+                    promise.reject(error_info);
+                }
+            );
+            return promise;
+        }
+    );
 };
 
 exports.getRecentHMM = function (event_label){
@@ -202,53 +243,28 @@ exports.getRecentGMMHMM = function (tag, event_label){
 };
 
 exports.updateGMM = function(gmm_params, event_label, n_mix, covariance_type, description){
-    _updateGMM(gmm_params, event_label, n_mix, covariance_type, description);
+    return _updateGMM(gmm_params, event_label, n_mix, covariance_type, description);
 };
 
 exports.updateHMM = function(hmm_params, event_label, n_component, description){
-    _updateHMM(hmm_params, event_label, n_component, description);
+    return _updateHMM(hmm_params, event_label, n_component, description);
 };
 
 exports.updateGMMHMM = function (tag, event_label, model, config, description){
-    var promises = [];
-    var gmm_params = model["gmmParams"],
-        hmm_params = model["hmmParams"],
-        n_component = model["nComponent"],
-        n_mix = model["nMix"],
-        covariance_type = model["covarianceType"];
-    promises.push(_updateGMM(gmm_params, event_label, n_mix, covariance_type, description));
-    promises.push(_updateHMM(hmm_params, event_label, n_component, description));
-    return AV.Promise.when(promises).then(
-        function (gmm_id, hmm_id){
-            var promise = new AV.Promise();
-            var GMMHMM = AV.Object.extend("gmmhmm");
-            var _gmmhmm = new GMMHMM();
-            // Get current time
-            var timestamp = new Date();
-            // Create pointer for gmm and hmm.
-            var gmm_pointer = AV.Object.createWithoutData("gmm", gmm_id);
-            var hmm_pointer = AV.Object.createWithoutData("hmm", hmm_id);
-            // Set gmmhmm's parameters.
-            _gmmhmm.set("tag", tag);
-            _gmmhmm.set("gmm", gmm_pointer);
-            _gmmhmm.set("hmm", hmm_pointer);
-            _gmmhmm.set("eventLabel", event_label);
-            _gmmhmm.set("requestCount", 0);
-            _gmmhmm.set("description", description);
-            _gmmhmm.set("timestamp", timestamp);
-            _gmmhmm.set("config", config);
-            _gmmhmm.save().then(
-                function (gmmhmm){
-                    console.log("New GMMHMM object created with objectId: " + gmmhmm.id);
-                    promise.resolve(gmmhmm.id);
-                },
-                function (error_info) {
-                    console.log("Failed to create new GMMHMM object, with error code: " + error_info.code + " " + error_info.message);
-                    promise.reject(error_info);
-                }
-            );
-            return promise;
-        }
-    );
+    return _updateGMMHMM(tag, event_label, model, config, description);
 };
 
+exports.initGMMHMM = function (tag, event_label, n_component, hmm_params, another_params, config, description){
+    var gmm_params = {
+        "nMix": another_params["nMix"],
+        "covarianceType": another_params["covarianceType"]
+    };
+    var model = {
+        "gmmParams": gmm_params,
+        "hmmParams": hmm_params,
+        "nComponent": n_component,
+        "nMix": another_params["nMix"],
+        "covarianceType": another_params["covarianceType"]
+    };
+    return _updateGMMHMM(tag, event_label, model, config, description);
+};

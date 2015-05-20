@@ -149,7 +149,7 @@ You can specify which serial of models used to predict by ***tag***.
 It will return the scores of every possible event type.
 
 
-### Train randomly or without observations [POST]
+### Predict event's type of sequence [POST]
 + Request (application/json)
 
        

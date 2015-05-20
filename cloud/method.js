@@ -3,6 +3,7 @@
  */
 var dao_config = require("cloud/dao/dao_config.js");
 var algo       = require("cloud/algo/model.js");
+var config     = require("cloud/config.js");
 
 exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, description){
     var Model = new algo.Model(algo_type, tag, event_label);
@@ -98,6 +99,21 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
         },
         function (error){
             console.log(error);
+            promise.reject(error);
+        }
+    );
+    return promise;
+};
+
+exports.initModelParams = function (algo_type, tag, event_label){
+    var promise = new AV.Promise();
+    var Model = new algo.Model(algo_type, tag, event_label);
+    var init_params = config.InitParams[algo_type][event_label];
+    Model.initModel(tag, event_label, init_params["nComponent"], init_params["hmmParams"], init_params["gmmParams"]).then(
+        function (model_id){
+            promise.resolve(model_id);
+        },
+        function (error){
             promise.reject(error);
         }
     );
