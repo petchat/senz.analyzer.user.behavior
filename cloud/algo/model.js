@@ -104,9 +104,9 @@ exports.Model = function (algo_type, tag, event_label) {
                 _model  = model["model"];
                 _config = model["config"];
                 //console.log("get");
-                //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
                 data["model"]  = _model;
                 data["config"] = _config;
+                console.log('untreated data content is:\n' + JSON.stringify(data, null, 4));
                 promise.resolve(model);
             },
             function (error){
