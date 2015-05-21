@@ -155,7 +155,8 @@ It will return the scores of every possible event type.
        
     + Header
 
-            auth-key  : 123abc456
+            X-AVOSCloud-Application-Id  : dkc5xdbwprsrh9809kqwopja5ckfbsrpd7dz9a30yugm9tut,
+            X-AVOSCloud-Application-Key : 3sy9w8uwlr35xl54lja3rawyf8xjrhofxtvcwzng3blg7q31
 
     + Body
 
@@ -185,4 +186,35 @@ It will return the scores of every possible event type.
             },
             "message":"Classifying successfully! at Tue May 19 2015 16:33:48 GMT+0800 (CST)"
         }
+        }
+
+
+## Init a Model for a event [/initModelParams/]
+You can init a model params with ***tag***, ***event label*** and ***algo type***.
+
+### Init Model [POST]
++ Request (application/json)
+
+
+    + Header
+
+            X-AVOSCloud-Application-Id  : dkc5xdbwprsrh9809kqwopja5ckfbsrpd7dz9a30yugm9tut,
+            X-AVOSCloud-Application-Key : 3sy9w8uwlr35xl54lja3rawyf8xjrhofxtvcwzng3blg7q31
+
+    + Body
+
+            {
+            "algoType": "GMMHMM",
+            "tag": "random_generated_base_model",
+            "eventLabel": "dining.chineseRestaurant"
+            }
+
++ Response 201 (application/json)
+
+        {
+        "result":{
+            "code":0,
+            "modelId":"555c8fe2e4b044c3499f2d2d",
+            "message":"Model init successfully! at Wed May 20 2015 21:45:06 GMT+0800 (CST)"
+            }
         }
