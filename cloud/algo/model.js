@@ -140,9 +140,9 @@ exports.Model = function (algo_type, tag, event_label) {
                 var model_config = {
                     "logType": config["log_type"],
                     "eventType": config["events_type"],
-                    "motionType": config["motion_type"],
-                    "soundType": config["sound_level1_type"],
-                    "locationType": config["location_level2_type"]
+                    "motionType": config[config["log_type"]["motion"]],
+                    "soundType": config[config["log_type"]["sound"]],
+                    "locationType": config[config["log_type"]["location"]]
                 };
                 return Algo[algo_type]["initModel"](tag, event_label, n_component, hmm_params, another_params, model_config, description);
             },

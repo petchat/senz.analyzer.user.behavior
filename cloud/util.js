@@ -41,6 +41,15 @@ exports.processConfig = function (config_names, config_values){
             }
             config_value_result = processedContentValue;
         }
+        else if (config_names[i] == "log_type"){
+            var processedContentValue = {};
+            for (var key in config_values[i]){
+                if (processConfigItem(config_values[i][key], "isActive")) {
+                    processedContentValue[processConfigContent(key)] = config_values[i][key]["selected"];
+                }
+            }
+            config_value_result = processedContentValue;
+        }
         // ...
         // - Other conditions put here...
         // ...
