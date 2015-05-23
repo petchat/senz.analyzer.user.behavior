@@ -104,8 +104,8 @@ exports.Algo = {
         train: "http://120.27.30.239:9047/trainingGMMHMM/",
         //train: "http://127.0.0.1:9010/trainingGMMHMM/",
         trainRandomly: "http://120.27.30.239:9047/trainingGMMHMMrandomly/",
-        //classify: "http://120.27.30.239:9047/classifyGMMHMM/",
-        classify: "http://127.0.0.1:9010/classifyGMMHMM/",
+        classify: "http://120.27.30.239:9047/classifyGMMHMM/",
+        //classify: "http://127.0.0.1:9010/classifyGMMHMM/",
         getModel: dao.getRecentGMMHMM,
         updateModel: dao.updateGMMHMM,
         initModel: dao.initGMMHMM
