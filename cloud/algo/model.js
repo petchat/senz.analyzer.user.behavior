@@ -43,9 +43,12 @@ exports.Classifier = function (algo_type, tag, event_labels){
         var data = {};
         data["seq"] = seq;
         data["models"] = [];
+        data["config"] = [];
         _Models.forEach(function (model){
             data["models"].push(model["model"]);
+            data["config"].push(model["config"]);
         });
+        console.log(JSON.stringify(data));
         var promise = new AV.Promise();
         req.post(
             {
@@ -60,7 +63,6 @@ exports.Classifier = function (algo_type, tag, event_labels){
                     for (var i=0; i<probs.length; i++){
                         result[_e_labels[i]] = probs[i];
                     }
-                    //console.log(result);
                     promise.resolve(result);
                 }
                 else {
@@ -116,17 +118,9 @@ exports.Model = function (algo_type, tag, event_label) {
     };
 
     var _updateModel = function (description){
-        var promise = new AV.Promise();
         //console.log("update");
         //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
-        return Algo[algo_type]["updateModel"](_tag, _e_label, _model, _config, description).then(
-            function (model_id){
-                promise.resolve(model_id);
-            },
-            function (error){
-                promise.reject(error);
-            }
-        );
+        return Algo[algo_type]["updateModel"](_tag, _e_label, _model, _config, description);
     };
 
     var _initModel = function (tag, event_label, n_component, hmm_params, another_params){
