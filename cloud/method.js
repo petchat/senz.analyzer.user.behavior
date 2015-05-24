@@ -78,31 +78,22 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
 };
 
 exports.classifySingleSeq = function (algo_type, tag, seq){
-    var promise = new AV.Promise();
-    dao_config.getConfig().then(
+    //var promise = new AV.Promise();
+    var Classifier;
+    return dao_config.getConfig().then(
         function (config){
             var event_labels = config["events_type"];
-            var Classifier = new algo.Classifier(algo_type, tag, event_labels);
-            return Classifier.configuration().then(
-                function (){
-                    return Classifier.classify(seq);
-                },
-                function (error){
-                    promise.reject(error);
-                }
-            );
+            Classifier = new algo.Classifier(algo_type, tag, event_labels);
+            return Classifier.configuration();
         }
     ).then(
-        function (result){
-            //console.log(result);
-            promise.resolve(result);
+        function (){
+            return Classifier.classify(seq);
         },
         function (error){
-            console.log(error);
             promise.reject(error);
         }
     );
-    return promise;
 };
 
 exports.initModelParams = function (algo_type, tag, event_label){
