@@ -15,7 +15,7 @@ var processConfigItem = function (config_item_value, config_type){
 
 // Replace '#' to '.'
 var processConfigContent = function (config_content){
-    if (typeof(config_content) == "string"){
+    if (typeof config_content === "string"){
         return config_content.replace("#", ".");
     }
     // TODO: Following are other config contents' processing.
@@ -28,7 +28,7 @@ var processConfigContent = function (config_content){
 exports.processConfig = function (config_names, config_values){
     // Get useful config from config values.
     var config_processed = {};
-    for (i in config_names){
+    for (var i in config_names){
         // i is index of name of config.
         // Processing the i'th config value
         var config_value_result = [];

@@ -2,49 +2,54 @@
  * Created by MeoWoodie on 5/15/15.
  */
 
-var req    = require("request");
+var req = require("request");
 var config = require("cloud/config.js");
 var dao_config = require("cloud/dao/dao_config.js");
 
 var Algo = config.Algo;
 
-exports.Classifier = function (algo_type, tag, event_labels){
+exports.Classifier = function (algo_type, tag, event_labels) {
     var _Models = [],
-        _tag    = "",
+        _tag = "",
         _e_labels = [];
 
     var classify_url = "";
 
-    var _configuration = function (){
+    var _configuration = function () {
         _tag = tag;
         classify_url = Algo[algo_type]["classify"];
 
         var promises = [];
-        event_labels.forEach(function (event_label){
+        event_labels.forEach(function (event_label) {
             promises.push(Algo[algo_type]["getModel"](_tag, event_label));
         });
+
         return AV.Promise.all(promises).then(
-            function (models){
-                models.forEach(function (model){
+            function (models) {
+                // TODO return promise
+                models.forEach(function (model) {
                     if (model != undefined) {
                         _Models.push(model);
                         _e_labels.push(model["eventLabel"]);
                     }
                 });
+                return AV.Promise.as("ok");
             },
-            function (error){
+            function (error) {
+                // TODO correct it
                 var failed = new AV.Promise();
                 failed.reject(error);
+                return failed;
             }
         );
     };
 
-    var _classify = function (seq){
+    var _classify = function (seq) {
         var data = {};
         data["seq"] = seq;
         data["models"] = [];
         data["config"] = [];
-        _Models.forEach(function (model){
+        _Models.forEach(function (model) {
             data["models"].push(model["model"]);
             data["config"].push(model["config"]);
         });
@@ -60,7 +65,7 @@ exports.Classifier = function (algo_type, tag, event_labels){
                 if (body["code"] == 0) {
                     var probs = body['result'];
                     var result = {};
-                    for (var i=0; i<probs.length; i++){
+                    for (var i = 0; i < probs.length; i++) {
                         result[_e_labels[i]] = probs[i];
                     }
                     promise.resolve(result);
@@ -82,55 +87,55 @@ exports.Classifier = function (algo_type, tag, event_labels){
 
 // Usage:
 exports.Model = function (algo_type, tag, event_label) {
-    var _config  = {},
-        _model   = {},
-        _tag     = "",
+    var _config = {},
+        _model = {},
+        _tag = "",
         _e_label = "",
-        data     = {};
+        data = {};
 
     var train_url = "",
         train_randomly_url = "";
 
     var _configuration = function () {
-        _tag               = tag;
-        _e_label           = event_label;
-        train_url          = Algo[algo_type]["train"];
+        _tag = tag;
+        _e_label = event_label;
+        train_url = Algo[algo_type]["train"];
         train_randomly_url = Algo[algo_type]["trainRandomly"];
         return _getRecentModel();
     };
 
-    var _getRecentModel = function (){
+    var _getRecentModel = function () {
         var promise = new AV.Promise();
         return Algo[algo_type]["getModel"](_tag, _e_label).then(
-            function (model){
-                _model  = model["model"];
+            function (model) {
+                _model = model["model"];
                 _config = model["config"];
                 //console.log("get");
-                data["model"]  = _model;
+                data["model"] = _model;
                 data["config"] = _config;
                 console.log('untreated data content is:\n' + JSON.stringify(data, null, 4));
                 promise.resolve(model);
             },
-            function (error){
+            function (error) {
                 promise.reject(error);
             }
         );
     };
 
-    var _updateModel = function (description){
+    var _updateModel = function (description) {
         //console.log("update");
         //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
         return Algo[algo_type]["updateModel"](_tag, _e_label, _model, _config, description);
     };
 
-    var _initModel = function (tag, event_label, n_component, hmm_params, another_params){
+    var _initModel = function (tag, event_label, n_component, hmm_params, another_params) {
         // Init private members.
         _tag = tag;
         _e_label = event_label;
 
         var description = "It's initiation of this model.";
         return dao_config.getConfig().then(
-            function (config){
+            function (config) {
                 var model_config = {
                     "logType": config["log_type"],
                     "eventType": config["events_type"],
@@ -140,7 +145,7 @@ exports.Model = function (algo_type, tag, event_label) {
                 };
                 return Algo[algo_type]["initModel"](tag, event_label, n_component, hmm_params, another_params, model_config, description);
             },
-            function (error){
+            function (error) {
                 var failed = new AV.Promise();
                 failed.reject(error);
                 return failed;
@@ -148,7 +153,7 @@ exports.Model = function (algo_type, tag, event_label) {
         );
     };
 
-    var _train = function (obs, n_iter){
+    var _train = function (obs, n_iter) {
         data["obs"] = obs;
         data["model"]["nIter"] = n_iter;
         var promise = new AV.Promise();

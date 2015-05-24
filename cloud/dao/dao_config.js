@@ -2,19 +2,19 @@
  * Created by MeoWoodie on 5/14/15.
  */
 var util = require("cloud/util.js");
+var Config = AV.Object.extend("config");
 
-exports.getConfig = function (){
+exports.getConfig = function () {
     var promise = new AV.Promise();
-    var Config = AV.Object.extend("config");
     var query = new AV.Query(Config);
     //query.equalTo("eventLabel", event_label);
     //query.descending("timestamp");
     //query.limit(1);
     query.find().then(
-        function (results){
+        function (results) {
             console.log("Successfully retrieved " + results.length + " configs.");
-            if (results.length == 0){
-                promise.resolve(undefined);
+            if (results.length == 0) {
+                promise.reject("Cannot find config.");
             }
             else {
                 var config_names = [];
@@ -29,7 +29,7 @@ exports.getConfig = function (){
                 promise.resolve(processed_config);
             }
         },
-        function (error_info){
+        function (error_info) {
             console.log("Error occurs! " + error_info.code + ' ' + error_info.message);
             promise.reject(error_info);
         }
