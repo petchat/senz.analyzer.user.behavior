@@ -1,6 +1,9 @@
 /**
  * Created by MeoWoodie on 5/11/15.
  */
+var HMM = AV.Object.extend("hmm");
+var GMM = AV.Object.extend("gmm");
+var GMMHMM = AV.Object.extend("gmmhmm");
 
 var _updateGMM = function (gmm_params, event_label, n_mix, covariance_type, description) {
     var promise = new AV.Promise();
@@ -96,8 +99,6 @@ var _updateGMMHMM = function (tag, event_label, model, config, description) {
     );
 };
 
-var HMM = AV.Object.extend("hmm");
-
 exports.getRecentHMM = function (event_label) {
     var promise = new AV.Promise();
     //var HMM = AV.Object.extend("hmm");
@@ -133,7 +134,6 @@ exports.getRecentHMM = function (event_label) {
     return promise;
 };
 
-var GMM = AV.Object.extend("gmm");
 exports.getRecentGMM = function (event_label) {
     var promise = new AV.Promise();
     //var GMM = AV.Object.extend("gmm");
@@ -171,10 +171,6 @@ exports.getRecentGMM = function (event_label) {
     return promise;
 };
 
-
-// TODO move out ALLLLLLLL AV.Object.extend
-
-var GMMHMM = AV.Object.extend("gmmhmm");
 exports.getRecentGMMHMM = function (tag, event_label) {
     var promise = new AV.Promise();
     //var GMMHMM = AV.Object.extend("gmmhmm");

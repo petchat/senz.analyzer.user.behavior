@@ -13,9 +13,7 @@ exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, descr
                 return Model.train(obs, 10);
             }
             else{
-                var failed = new AV.Promise();
-                failed.reject("Obs is undefined.");
-                return failed;
+                return AV.Promise.error("Obs is undefined.");
             }
         },
         function (error){
@@ -29,15 +27,11 @@ exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, descr
                 return Model.updateModel(description);
             }
             else{
-                var success = new AV.Promise();
-                success.resolve(model);
-                return success;
+                return AV.Promise.as(model);
             }
         },
         function (error){
-            var failed = new AV.Promise();
-            failed.reject(error);
-            return failed;
+            return AV.Promise.error(error);
         }
     );
 };
@@ -54,9 +48,7 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
             );
         },
         function (error){
-            var failed = new AV.Promise();
-            failed.reject(error);
-            return failed;
+            return AV.Promise.error(error);
         }
     ).then(
         function (model){
@@ -64,15 +56,11 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
                 return Model.updateModel(description);
             }
             else{
-                var success = new AV.Promise();
-                success.resolve(model);
-                return success;
+                return AV.Promise.as(model);
             }
         },
         function (error){
-            var failed = new AV.Promise();
-            failed.reject(error);
-            return failed;
+            return AV.Promise.error(error);
         }
     );
 };
@@ -91,7 +79,7 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
             return Classifier.classify(seq);
         },
         function (error){
-            promise.reject(error);
+            return AV.Promise.error(error);
         }
     );
 };

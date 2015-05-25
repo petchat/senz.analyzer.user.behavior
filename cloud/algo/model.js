@@ -36,10 +36,7 @@ exports.Classifier = function (algo_type, tag, event_labels) {
                 return AV.Promise.as("ok");
             },
             function (error) {
-                // TODO correct it
-                var failed = new AV.Promise();
-                failed.reject(error);
-                return failed;
+                return AV.Promise.error(error);
             }
         );
     };
@@ -146,9 +143,7 @@ exports.Model = function (algo_type, tag, event_label) {
                 return Algo[algo_type]["initModel"](tag, event_label, n_component, hmm_params, another_params, model_config, description);
             },
             function (error) {
-                var failed = new AV.Promise();
-                failed.reject(error);
-                return failed;
+                return AV.Promise.error(error);
             }
         );
     };
