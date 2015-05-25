@@ -1,0 +1,10 @@
+{
+    "name": "senz.analyzer.user.behavior",
+    "description": "Cloud Code project.",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "request": "latest",
+        "underscore": "latest"
+    }
+}
