@@ -111,3 +111,14 @@ exports.Algo = {
         initModel: dao.initGMMHMM
     }
 };
+
+exports.logEventType = {
+    "sta": "Start",
+    "ret": "Retrieving",
+    "sav": "Saving",
+    "upd": "Updating",
+    "r2s": "Middleware.Log.RawSenz",
+    "r2r": "Middleware.RawSenz.RefinedSenz",
+    "p2m": "Middleware.ProbSenz.MultiSenz",
+    "u2e": "Middleware.userbehavior.event"
+};

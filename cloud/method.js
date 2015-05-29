@@ -4,26 +4,29 @@
 var dao_config = require("cloud/dao/dao_config.js");
 var algo       = require("cloud/algo/model.js");
 var config     = require("cloud/config.js");
+var logger     = require("cloud/logger.js");
 
 exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, description){
     var Model = new algo.Model(algo_type, tag, event_label);
     return Model.configuration().then(
         function (){
             if (obs != undefined) {
+                logger.info(config.logEventType.u2e, "Observation is correct. Start to train.");
                 return Model.train(obs, 10);
             }
             else{
+                logger.error(config.logEventType.u2e, "Observation is incorrect. Failed to train.");
                 return AV.Promise.error("Obs is undefined.");
             }
         },
         function (error){
-            var failed = new AV.Promise();
-            failed.reject(error);
-            return failed;
+            logger.error(config.logEventType.u2e, "Configuration is incorrect. Failed to train.");
+            return AV.Promise.error(error);
         }
     ).then(
         function (model){
             if (description != undefined){
+                logger.info(config.logEventType.upd, "Training is over. Updating model to database.");
                 return Model.updateModel(description);
             }
             else{
@@ -31,6 +34,7 @@ exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, descr
             }
         },
         function (error){
+            logger.error(config.logEventType.u2e, "Training is over. But updating model failed.");
             return AV.Promise.error(error);
         }
     );
@@ -40,19 +44,24 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
     var Model = new algo.Model(algo_type, tag, event_label);
     return Model.configuration().then(
         function (){
+            logger.info(config.logEventType.ret, "Retrieving config from database.");
             return dao_config.getConfig().then(
                 function (config){
+                    logger.info(config.logEventType.ret, "Retrieved config from database.");
                     var event_prob_map = config["event_prob_map"];
+                    logger.info(config.logEventType.u2e, "Generate random observations according to event prob map. Start to train.");
                     return Model.trainRandomly(obs_length, obs_count, event_prob_map, 10);
                 }
             );
         },
         function (error){
+            logger.info(config.logEventType.ret, "Retrieving config failed.");
             return AV.Promise.error(error);
         }
     ).then(
         function (model){
             if (description != undefined){
+                logger.info(config.logEventType.upd, "Training is over. Updating model to database.");
                 return Model.updateModel(description);
             }
             else{
@@ -60,6 +69,7 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
             }
         },
         function (error){
+            logger.info(config.logEventType.upd, "Training is over. But updating model failed.");
             return AV.Promise.error(error);
         }
     );
