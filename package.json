@@ -5,6 +5,7 @@
     "private": true,
     "dependencies": {
         "request": "latest",
-        "underscore": "latest"
+        "underscore": "latest",
+        "node-logentries": "latest"
     }
 }
