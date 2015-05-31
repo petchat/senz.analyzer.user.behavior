@@ -55,7 +55,7 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
             );
         },
         function (error){
-            logger.info(config.logEventType.ret, "Retrieving config failed.");
+            logger.error(config.logEventType.ret, "Retrieving config failed.");
             return AV.Promise.error(error);
         }
     ).then(
@@ -80,12 +80,19 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
     var Classifier;
     return dao_config.getConfig().then(
         function (config){
+            logger.info(config.logEventType.ret, "Retrieving config from senz.config.");
             var event_labels = config["events_type"];
             Classifier = new algo.Classifier(algo_type, tag, event_labels);
             return Classifier.configuration();
+        },
+        function (error){
+            logger.error(config.logEventType.ret, "Retrieving config from senz.config failed.");
+            return AV.Promise.error(error);
         }
     ).then(
         function (){
+            logger.info(config.logEventType.ret, "Retrieving config from database.");
+            logger.info(config.logEventType.u2e, "Predict the behavior's event with the sequence.");
             return Classifier.classify(seq);
         },
         function (error){
