@@ -112,6 +112,8 @@ exports.Algo = {
     }
 };
 
+exports.logentries_token = "c45062a1-5926-47de-9c45-e76d64ebcb54";
+
 exports.logEventType = {
     "sta": "Start",
     "ret": "Retrieving",
