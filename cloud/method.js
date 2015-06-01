@@ -45,17 +45,21 @@ exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, 
     return Model.configuration().then(
         function (){
             logger.info(config.logEventType.ret, "Retrieving config from database.");
-            return dao_config.getConfig().then(
-                function (config){
-                    logger.info(config.logEventType.ret, "Retrieved config from database.");
-                    var event_prob_map = config["event_prob_map"];
-                    logger.info(config.logEventType.u2e, "Generate random observations according to event prob map. Start to train.");
-                    return Model.trainRandomly(obs_length, obs_count, event_prob_map, 10);
-                }
-            );
+            return dao_config.getConfig();
         },
         function (error){
             logger.error(config.logEventType.ret, "Retrieving config failed.");
+            return AV.Promise.error(error);
+        }
+    ).then(
+        function (config){
+            logger.info(config.logEventType.ret, "Retrieved config from database.");
+            var event_prob_map = config["event_prob_map"];
+            logger.info(config.logEventType.u2e, "Generate random observations according to event prob map. Start to train.");
+            return Model.trainRandomly(obs_length, obs_count, event_prob_map, 10);
+        },
+        function (error){
+            logger.error(config.logEventType.ret, "Retrieving config from senz.config failed.");
             return AV.Promise.error(error);
         }
     ).then(
