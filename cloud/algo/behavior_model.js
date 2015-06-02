@@ -8,7 +8,7 @@ var dao_config = require("cloud/dao/dao_config.js");
 
 var Algo = config.Algo;
 
-exports.Classifier = function (algo_type, tag, event_labels) {
+exports.BehaviorClassifier = function (algo_type, tag, event_labels) {
     var _Models = [],
         _tag = "",
         _e_labels = [];
@@ -83,7 +83,7 @@ exports.Classifier = function (algo_type, tag, event_labels) {
 };
 
 // Usage:
-exports.Model = function (algo_type, tag, event_label) {
+exports.BehaviorModel = function (algo_type, tag, event_label) {
     var _config = {},
         _model = {},
         _tag = "",

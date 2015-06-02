@@ -1,6 +1,6 @@
 var dao = require("cloud/dao/dao_model.js");
 var method = require("cloud/behavior.js");
-var algo = require("cloud/algo/model.js");
+var algo = require("cloud/algo/behavior_model.js");
 var config = require("cloud/config.js");
 var _ = require("underscore");
 
