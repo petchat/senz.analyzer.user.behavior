@@ -147,7 +147,7 @@ exports.getRecentGMM = function (event_label, tag) {
     query.limit(1);
     query.find().then(
         function (results) {
-            console.log("Successfully retrieved " + results.length + " HMM.");
+            console.log("Successfully retrieved " + results.length + " GMM.");
             var hmm = {};
             results.forEach(function (result) {
                 var event_label = result.get("eventLabel");
@@ -188,7 +188,7 @@ exports.getRecentGMMHMM = function (tag, event_label) {
     // TODO use first
     query.find().then(
         function (results) {
-            console.log("Successfully retrieved " + results.length + " HMM.");
+            console.log("Successfully retrieved " + results.length + " GMMHMM.");
             var gmmhmm = {};
             if (results.length == 0) {
                 // TODO change to reject
