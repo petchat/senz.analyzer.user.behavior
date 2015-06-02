@@ -2,12 +2,13 @@
  * Created by MeoWoodie on 5/14/15.
  */
 var dao_config = require("cloud/dao/dao_config.js");
-var algo       = require("cloud/algo/behavior_model.js");
+var m          = require("cloud/algo/model.js");
+var c          = require("cloud/algo/behavior_classifier.js");
 var config     = require("cloud/config.js");
 var logger     = require("cloud/logger.js");
 
 exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, description){
-    var Model = new algo.BehaviorModel(algo_type, tag, event_label);
+    var Model = new m.Model(algo_type, tag, event_label);
     return Model.configuration().then(
         function (){
             if (obs != undefined) {
@@ -41,7 +42,7 @@ exports.trainWithSpecificObs = function (algo_type, tag, event_label, obs, descr
 };
 
 exports.trainWithRandomObs = function (algo_type, tag, event_label, obs_length, obs_count, description){
-    var Model = new algo.BehaviorModel(algo_type, tag, event_label);
+    var Model = new m.Model(algo_type, tag, event_label);
     return Model.configuration().then(
         function (){
             //logger.info(config.logEventType.ret, "Retrieving config from database.");
@@ -86,7 +87,7 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
         function (config){
             //logger.info(config.logEventType.ret, "Retrieving config from senz.config.");
             var event_labels = config["events_type"];
-            Classifier = new algo.BehaviorClassifier(algo_type, tag, event_labels);
+            Classifier = new c.BehaviorClassifier(algo_type, tag, event_labels);
             return Classifier.configuration();
         },
         function (error){
@@ -107,7 +108,7 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
 
 exports.initModelParams = function (algo_type, tag, event_label){
     var promise = new AV.Promise();
-    var Model = new algo.BehaviorModel(algo_type, tag, event_label);
+    var Model = new m.Model(algo_type, tag, event_label);
     //var init_params = config.InitParams[algo_type][event_label];
     var init_model = config.BehaviorInitParams[algo_type][event_label];
     Model.initModel(tag, event_label, init_model).then(
