@@ -125,7 +125,7 @@ exports.Model = function (algo_type, tag, event_label) {
         return Algo[algo_type]["updateModel"](_tag, _e_label, _model, _config, description);
     };
 
-    var _initModel = function (tag, event_label, n_component, hmm_params, another_params) {
+    var _initModel = function (tag, event_label, init_model) {
         // Init private members.
         _tag = tag;
         _e_label = event_label;
@@ -140,7 +140,7 @@ exports.Model = function (algo_type, tag, event_label) {
                     "soundType": config[config["log_type"]["sound"]],
                     "locationType": config[config["log_type"]["location"]]
                 };
-                return Algo[algo_type]["initModel"](tag, event_label, n_component, hmm_params, another_params, model_config, description);
+                return Algo[algo_type]["initModel"](tag, event_label, init_model, model_config, description);
             },
             function (error) {
                 return AV.Promise.error(error);

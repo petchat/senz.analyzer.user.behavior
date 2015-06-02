@@ -2,7 +2,7 @@ var dao = require("cloud/dao/dao_model.js");
 
 exports.Prob2muti = "http://127.0.0.1:5000/senzlist/prob2muti/";
 
-exports.InitParams = {
+exports.BehaviorInitParams = {
     GMMHMM: {
         "dining.chineseRestaurant": {
             nComponent: 4,
@@ -99,6 +99,13 @@ exports.InitParams = {
     }
 };
 
+exports.PoisInitParams = {
+    GMM: {
+        nMix: 4,
+        covarianceType: "full"
+    }
+};
+
 exports.Algo = {
     GMMHMM: {
         train: "http://120.27.30.239:9047/trainingGMMHMM/",
@@ -109,18 +116,26 @@ exports.Algo = {
         getModel: dao.getRecentGMMHMM,
         updateModel: dao.updateGMMHMM,
         initModel: dao.initGMMHMM
+    },
+    GMM: {
+        train: "",
+        classify: "",
+        trainRandomly: "",
+        getModel: dao.getRecentGMM,
+        updateModel: dao.updateGMM,
+        initModel: dao.initGMM
     }
 };
 
 exports.logentries_token = "c45062a1-5926-47de-9c45-e76d64ebcb54";
 
 exports.logEventType = {
-    "sta": "Start",
-    "ret": "Retrieving",
-    "sav": "Saving",
-    "upd": "Updating",
-    "r2s": "Middleware.Log.RawSenz",
-    "r2r": "Middleware.RawSenz.RefinedSenz",
-    "p2m": "Middleware.ProbSenz.MultiSenz",
-    "u2e": "Middleware.userbehavior.event"
+    sta: "Start",
+    ret: "Retrieving",
+    sav: "Saving",
+    upd: "Updating",
+    r2s: "Middleware.Log.RawSenz",
+    r2r: "Middleware.RawSenz.RefinedSenz",
+    p2m: "Middleware.ProbSenz.MultiSenz",
+    u2e: "Middleware.userbehavior.event"
 };

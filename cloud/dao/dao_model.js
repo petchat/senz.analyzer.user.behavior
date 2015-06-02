@@ -265,17 +265,22 @@ exports.updateGMMHMM = function (tag, event_label, model, config, description) {
     return _updateGMMHMM(tag, event_label, model, config, description);
 };
 
-exports.initGMMHMM = function (tag, event_label, n_component, hmm_params, another_params, config, description) {
-    var gmm_params = {
-        "nMix": another_params["nMix"],
-        "covarianceType": another_params["covarianceType"]
-    };
+//exports.initGMMHMM = function (tag, event_label, n_component, hmm_params, another_params, config, description) {
+exports.initGMMHMM = function (tag, event_label, init_model, config, description) {
+    //var gmm_params = {
+    //    "nMix": model["gmmParams"]["nMix"],
+    //    "covarianceType": model["gmmParams"]["covarianceType"]
+    //};
     var model = {
-        "gmmParams": gmm_params,
-        "hmmParams": hmm_params,
-        "nComponent": n_component,
-        "nMix": another_params["nMix"],
-        "covarianceType": another_params["covarianceType"]
+        "gmmParams": init_model["gmmParams"],
+        "hmmParams": init_model["hmmParams"],
+        "nComponent": init_model["nComponent"],
+        "nMix": init_model["gmmParams"]["nMix"],
+        "covarianceType": init_model["gmmParams"]["covarianceType"]
     };
     return _updateGMMHMM(tag, event_label, model, config, description);
+};
+
+exports.initGMM = function (tag, event_label, model, config, description){
+
 };
