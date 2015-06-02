@@ -250,12 +250,15 @@ exports.getRecentGMMHMM = function (tag, event_label) {
     return promise;
 };
 
-exports.updateGMM = function (tag, gmm_params, event_label, n_mix, covariance_type, description) {
-    return _updateGMM(tag, gmm_params, event_label, n_mix, covariance_type, description);
+exports.updateGMM = function (tag, event_label, model, config, description) {
+    var n_mix = config["nMix"],
+        covariance_type = config["covarianceType"];
+    return _updateGMM(tag, model, event_label, n_mix, covariance_type, description);
 };
 
-exports.updateHMM = function (tag,hmm_params, event_label, n_component, description) {
-    return _updateHMM(tag, hmm_params, event_label, n_component, description);
+exports.updateHMM = function (tag, event_label, model, config, description) {
+    var n_component = config["nComponent"];
+    return _updateHMM(tag, model, event_label, n_component, description);
 };
 
 exports.updateGMMHMM = function (tag, event_label, model, config, description) {
