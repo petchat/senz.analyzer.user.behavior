@@ -217,5 +217,21 @@ AV.Cloud.define("predictPoi", function (request, response) {
 AV.Cloud.define("trainWithPois", function (request, response) {
     var algo_type = request.params.algoType,
         tag       = request.params.tag;
+    var date = new Date();
 
+    poi.initModelParams(algo_type, tag).then(
+        function (model_id){
+            response.success({
+                code: 0,
+                modelId: model_id,
+                message: "Model init successfully! at " + date
+            });
+        },
+        function (error){
+            response.error({
+                code: 1,
+                message: error
+            });
+        }
+    );
 });
