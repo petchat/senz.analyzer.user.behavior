@@ -163,7 +163,7 @@ AV.Cloud.define("initAllEventsModelParams", function (request, response) {
     var date = new Date();
 
     var promises = [];
-    var eventsInfo = config.InitParams[algo_type];
+    var eventsInfo = config.BehaviorInitParams[algo_type];
     _.keys(eventsInfo).forEach(function (event_label){
         promises.push(behavior.initModelParams(algo_type, tag, event_label));
     });
@@ -190,27 +190,32 @@ AV.Cloud.define("trainWithPois", function (request, response) {
 
 });
 
-AV.Cloud.define("classifyPois", function (request, response) {
+AV.Cloud.define("predictPoi", function (request, response) {
+    var algo_type = request.params.algoType,
+        tag       = request.params.tag,
+        pois      = request.params.pois;
+
+    var date = new Date();
+
+    poi.predictPoi(algo_type, tag, pois).then(
+        function (prob_list){
+            response.success({
+                code: 0,
+                probabilities: prob_list,
+                message: "Predict successfully! at " + date
+            });
+        },
+        function (error){
+            response.error({
+                code: 1,
+                message: error
+            });
+        }
+    );
+});
+
+AV.Cloud.define("trainWithPois", function (request, response) {
     var algo_type = request.params.algoType,
         tag       = request.params.tag;
 
 });
-
-poi.initModelParams("GMM", "for_testing_poi").then(
-    function (result){
-        console.log(result);
-    },
-    function (error){
-        console.log(error);
-    }
-);
-//dao.getRecentHMM("for_testing_poi", "poi").then(
-//    function (result){
-//        console.log(result);
-//    },
-//    function (error){
-//        console.log(error);
-//    }
-//);
-
-

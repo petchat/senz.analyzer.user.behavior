@@ -74,17 +74,19 @@ exports.predictPoi = function (algo_type, tag, poi_list){
 };
 
 exports.initModelParams = function (algo_type, tag){
-    var promise = new AV.Promise();
     var Model = new m.Model(algo_type, tag, "poi");
     //var init_params = config.InitParams[algo_type][event_label];
-    var init_model = config.PoisInitParams[algo_type];
-    Model.initModel(tag, "poi", init_model).then(
-        function (model_id){
-            promise.resolve(model_id);
+    return dao_config.getConfig().then(
+        function (configs){
+            var poi_type_list = configs[configs["log_type"]["location"]];
+            var init_model = config.PoisInitParams[algo_type];
+            // TODO: HOW???
+            init_model.nMix = poi_type_list.length;
+            init_model.params["nMix"] = poi_type_list.length;
+            return Model.initModel(tag, "poi", init_model);
         },
         function (error){
-            promise.reject(error);
+            return AV.Promise.error(error);
         }
     );
-    return promise;
 };
