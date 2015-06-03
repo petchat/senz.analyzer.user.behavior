@@ -1,6 +1,11 @@
 /**
  * Created by MeoWoodie on 6/2/15.
  */
+var dao_config = require("cloud/dao/dao_config.js");
+var m          = require("cloud/algo/model.js");
+var c          = require("cloud/algo/poi_classifier.js");
+var config     = require("cloud/config.js");
+var logger     = require("cloud/logger.js");
 
 //exports.trainWithPois = function (algo_type, tag){
 //    var Model = new m.Model(algo_type, tag, "poi");
@@ -36,3 +41,50 @@
 //    );
 //};
 
+var poi_list = [
+    {
+        "poiType": "restaurant",
+        "distence": 14.5
+    },
+    {
+        "poiType": "gym",
+        "distence": 24.1
+    }
+];
+
+var data = {
+    "pois": poi_list,
+    "timetamp": 12142543534634
+};
+
+exports.predictPoi = function (algo_type, tag, poi_list){
+    //var promise = new AV.Promise();
+    var Classifier;
+    Classifier = new c.PoiClassifier(algo_type, tag);
+    return Classifier.configuration().then(
+        function (){
+            //logger.info(config.logEventType.ret, "Retrieving config from database.");
+            //logger.info(config.logEventType.u2e, "Predict the behavior's event with the sequence.");
+            return Classifier.classify(poi_list);
+        },
+        function (error){
+            return AV.Promise.error(error);
+        }
+    );
+};
+
+exports.initModelParams = function (algo_type, tag){
+    var promise = new AV.Promise();
+    var Model = new m.Model(algo_type, tag, "poi");
+    //var init_params = config.InitParams[algo_type][event_label];
+    var init_model = config.PoisInitParams[algo_type];
+    Model.initModel(tag, "poi", init_model).then(
+        function (model_id){
+            promise.resolve(model_id);
+        },
+        function (error){
+            promise.reject(error);
+        }
+    );
+    return promise;
+};

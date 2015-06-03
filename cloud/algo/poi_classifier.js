@@ -8,49 +8,42 @@ var config = require("cloud/config.js");
 
 var Algo = config.Algo;
 
-exports.PoiClassifier = function (algo_type, tag, event_labels) {
-    var _Models = [],
+exports.PoiClassifier = function (algo_type, tag) {
+    var _model = {},
+        _config = {},
         _tag = "",
-        _e_labels = [];
-
-    var classify_url = "";
+        _label = "poi",
+        classify_url = "";
 
     var _configuration = function () {
         _tag = tag;
         classify_url = Algo[algo_type]["classify"];
+        return _getRecentModel();
+    };
 
-        var promises = [];
-        event_labels.forEach(function (event_label) {
-            promises.push(Algo[algo_type]["getModel"](_tag, event_label));
-        });
-
-        return AV.Promise.all(promises).then(
-            function (models) {
-                // TODO return promise
-                models.forEach(function (model) {
-                    if (model != undefined) {
-                        _Models.push(model);
-                        _e_labels.push(model["eventLabel"]);
-                    }
-                });
-                return AV.Promise.as("ok");
+    var _getRecentModel = function () {
+        var promise = new AV.Promise();
+        return Algo[algo_type]["getModel"](_tag, _label).then(
+            function (model) {
+                _model = model["model"];
+                _config = model["config"];
+                ////console.log("get");
+                //data["model"] = _model;
+                //data["config"] = _config;
+                //console.log('untreated data content is:\n' + JSON.stringify(data, null, 4));
+                promise.resolve(model);
             },
             function (error) {
-                return AV.Promise.error(error);
+                promise.reject(error);
             }
         );
     };
 
-    var _classify = function (seq) {
+    var _classify = function (poi_list) {
         var data = {};
-        data["seq"] = seq;
-        data["models"] = [];
-        data["config"] = [];
-        _Models.forEach(function (model) {
-            data["models"].push(model["model"]);
-            data["config"].push(model["config"]);
-        });
-        console.log(JSON.stringify(data));
+        data["pois"] = poi_list;
+        data["models"] = _model;
+        data["config"] = _config;
         var promise = new AV.Promise();
         req.post(
             {
