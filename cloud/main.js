@@ -196,3 +196,11 @@ AV.Cloud.define("classifyPois", function (request, response) {
 });
 
 
+//dao.getRecentHMM("for_testing_poi", "poi").then(
+//    function (result){
+//        console.log(result);
+//    },
+//    function (error){
+//        console.log(error);
+//    }
+//);

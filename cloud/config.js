@@ -102,7 +102,11 @@ exports.BehaviorInitParams = {
 exports.PoisInitParams = {
     GMM: {
         nMix: 4,
-        covarianceType: "full"
+        covarianceType: "full",
+        params: {
+            nMix: 4,
+            covarianceType: "full"
+        }
     }
 };
 
@@ -123,7 +127,7 @@ exports.Algo = {
         trainRandomly: "",
         getModel: dao.getRecentGMM,
         updateModel: dao.updateGMM,
-        initModel: dao.initGMM
+        initModel: dao.updateGMM
     }
 };
 

@@ -5,13 +5,14 @@ var HMM = AV.Object.extend("hmm");
 var GMM = AV.Object.extend("gmm");
 var GMMHMM = AV.Object.extend("gmmhmm");
 
-var _updateGMM = function (tag, gmm_params, event_label, n_mix, covariance_type, description) {
+var _updateGMM = function (tag, gmm_params, event_label, config, n_mix, covariance_type, description) {
     var promise = new AV.Promise();
     //var GMM = AV.Object.extend("gmm");
     var _gmm = new GMM();
     // Get current time
     var timestamp = new Date();
     // Set gmm's parameters.
+    _gmm.set("config", config);
     _gmm.set('tag', tag);
     _gmm.set('params', gmm_params);
     _gmm.set('eventLabel', event_label);
@@ -32,13 +33,14 @@ var _updateGMM = function (tag, gmm_params, event_label, n_mix, covariance_type,
     return promise;
 };
 
-var _updateHMM = function (tag, hmm_params, event_label, n_component, description) {
+var _updateHMM = function (tag, hmm_params, event_label, config, n_component, description) {
     var promise = new AV.Promise();
     //var HMM = AV.Object.extend("hmm");
     var _hmm = new HMM();
     // Get current time
     var timestamp = new Date();
     // Set gmm's parameters.
+    _hmm.set("config", config);
     _hmm.set("tag", tag);
     _hmm.set("params", hmm_params);
     _hmm.set("eventLabel", event_label);
@@ -65,8 +67,8 @@ var _updateGMMHMM = function (tag, event_label, model, config, description) {
         n_component = model["nComponent"],
         n_mix = model["nMix"],
         covariance_type = model["covarianceType"];
-    promises.push(_updateGMM(tag, gmm_params, event_label, n_mix, covariance_type, description));
-    promises.push(_updateHMM(tag, hmm_params, event_label, n_component, description));
+    promises.push(_updateGMM(tag, gmm_params, event_label, config, n_mix, covariance_type, description));
+    promises.push(_updateHMM(tag, hmm_params, event_label, config, n_component, description));
     return AV.Promise.when(promises).then(
         function (gmm_id, hmm_id) {
             var promise = new AV.Promise();
@@ -101,33 +103,38 @@ var _updateGMMHMM = function (tag, event_label, model, config, description) {
     );
 };
 
-exports.getRecentHMM = function (event_label, tag) {
+exports.getRecentHMM = function (tag, event_label) {
     var promise = new AV.Promise();
     //var HMM = AV.Object.extend("hmm");
     var query = new AV.Query(HMM);
     query.equalTo("eventLabel", event_label);
     query.equalTo("tag", tag);
     query.descending("timestamp");
-    query.limit(1);
-    query.find().then(
-        function (results) {
-            console.log("Successfully retrieved " + results.length + " HMM.");
-            var hmm = {};
-            results.forEach(function (result) {
+    //query.limit(1);
+    query.first().then(
+        function (result) {
+            if (result == undefined){
+                promise.reject("There is no this model");
+            }
+            else {
                 var event_label = result.get("eventLabel");
-                var hmm_params = result.get("params");
-                var n_component = result.get("nComponent");
                 var description = result.get("description");
                 var timestamp = result.get("timestamp");
-                hmm = {
-                    "eventLabel": event_label,
-                    "params": hmm_params,
-                    "nComponent": n_component,
-                    "description": description,
-                    "timestamp": timestamp
+                var model = {
+                    "nComponent": result.get("nComponent"),
+                    "params": result.get("params")
                 };
-            });
-            promise.resolve(hmm);
+                var config = result.get("config");
+                var hmm = {
+                    "eventLabel": event_label,
+                    "description": description,
+                    "timestamp": timestamp,
+                    // Useful info.
+                    "model": model,
+                    "config": config
+                };
+                promise.resolve(hmm);
+            }
         },
         function (error_info) {
             console.log("Error occurs! " + error_info.code + ' ' + error_info.message);
@@ -137,35 +144,40 @@ exports.getRecentHMM = function (event_label, tag) {
     return promise;
 };
 
-exports.getRecentGMM = function (event_label, tag) {
+exports.getRecentGMM = function (tag, event_label) {
     var promise = new AV.Promise();
     //var GMM = AV.Object.extend("gmm");
     var query = new AV.Query(GMM);
     query.equalTo("eventLabel", event_label);
     query.equalTo("tag", tag);
     query.descending("timestamp");
-    query.limit(1);
-    query.find().then(
-        function (results) {
-            console.log("Successfully retrieved " + results.length + " GMM.");
-            var hmm = {};
-            results.forEach(function (result) {
+    //query.limit(1);
+    query.first().then(
+        function (result) {
+            if (result == undefined){
+                promise.reject("There is no this model");
+            }
+            else {
                 var event_label = result.get("eventLabel");
-                var hmm_params = result.get("params");
-                var n_mix = result.get("nMix");
-                var covariance_type = result.get("covarianceType");
                 var description = result.get("description");
                 var timestamp = result.get("timestamp");
-                hmm = {
-                    "eventLabel": event_label,
-                    "params": hmm_params,
-                    "nMix": n_mix,
-                    "covarianceType": covariance_type,
-                    "description": description,
-                    "timestamp": timestamp
+                var model = {
+                    "nMix": result.get("nMix"),
+                    "covarianceType": result.get("covarianceType"),
+                    "params": result.get("params")
                 };
-            });
-            promise.resolve(hmm);
+                var config = result.get("config");
+                var gmm = {
+                    "eventLabel": event_label,
+                    "description": description,
+                    "timestamp": timestamp,
+                    // Useful info.
+                    "model": model,
+                    "config": config
+                };
+                //});
+                promise.resolve(gmm);
+            }
         },
         function (error_info) {
             console.log("Error occurs! " + error_info.code + ' ' + error_info.message);
@@ -184,20 +196,14 @@ exports.getRecentGMMHMM = function (tag, event_label) {
     query.descending("timestamp");
     query.include("gmm");
     query.include("hmm");
-    query.limit(1);
-    // TODO use first
-    query.find().then(
-        function (results) {
-            console.log("Successfully retrieved " + results.length + " GMMHMM.");
-            var gmmhmm = {};
-            if (results.length == 0) {
-                // TODO change to reject
-                promise.resolve(undefined);
-                return;
+    query.first().then(
+        function (result) {
+            if (result == undefined){
+                promise.reject("There is no this model");
             }
-            results.forEach(function (result) {
+            else {
                 var event_label = result.get("eventLabel");
-                var request_count = result.get("requestCount");
+                //var request_count = result.get("requestCount");
                 var gmm_id = result.get("gmm").id;
                 var hmm_id = result.get("hmm").id;
                 var description = result.get("description");
@@ -228,9 +234,9 @@ exports.getRecentGMMHMM = function (tag, event_label) {
                 model["gmmParams"]["covarianceType"] = gmm["covarianceType"];
                 model["gmmParams"]["nMix"] = gmm["nMix"];
 
-                gmmhmm = {
+                var gmmhmm = {
                     "eventLabel": event_label,
-                    "requestCount": request_count,
+                    //"requestCount": request_count,
                     "gmmId": gmm_id,
                     "hmmId": hmm_id,
                     "description": description,
@@ -239,8 +245,9 @@ exports.getRecentGMMHMM = function (tag, event_label) {
                     "model": model,
                     "config": config
                 };
-            });
-            promise.resolve(gmmhmm);
+                //});
+                promise.resolve(gmmhmm);
+            }
         },
         function (error_info) {
             console.log("Error occurs! " + error_info.code + ' ' + error_info.message);
@@ -251,14 +258,16 @@ exports.getRecentGMMHMM = function (tag, event_label) {
 };
 
 exports.updateGMM = function (tag, event_label, model, config, description) {
-    var n_mix = config["nMix"],
-        covariance_type = config["covarianceType"];
-    return _updateGMM(tag, model, event_label, n_mix, covariance_type, description);
+    var n_mix = model["nMix"],
+        covariance_type = model["covarianceType"],
+        params = model["params"];
+    return _updateGMM(tag, params, event_label, config, n_mix, covariance_type, description);
 };
 
 exports.updateHMM = function (tag, event_label, model, config, description) {
-    var n_component = config["nComponent"];
-    return _updateHMM(tag, model, event_label, n_component, description);
+    var n_component = model["nComponent"],
+        params = model["params"];
+    return _updateHMM(tag, params, event_label, config, n_component, description);
 };
 
 exports.updateGMMHMM = function (tag, event_label, model, config, description) {
@@ -279,8 +288,4 @@ exports.initGMMHMM = function (tag, event_label, init_model, config, description
         "covarianceType": init_model["gmmParams"]["covarianceType"]
     };
     return _updateGMMHMM(tag, event_label, model, config, description);
-};
-
-exports.initGMM = function (tag, event_label, model, config, description){
-
 };
