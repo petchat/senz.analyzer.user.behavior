@@ -9,11 +9,11 @@ var dao_config = require("cloud/dao/dao_config.js");
 var Algo = config.Algo;
 
 // Usage:
-exports.Model = function (algo_type, tag, event_label) {
+exports.Model = function (algo_type, tag, label) {
     var _config = {},
         _model = {},
         _tag = "",
-        _e_label = "",
+        _label = "",
         data = {};
 
     var train_url = "",
@@ -21,7 +21,7 @@ exports.Model = function (algo_type, tag, event_label) {
 
     var _configuration = function () {
         _tag = tag;
-        _e_label = event_label;
+        _label = label;
         train_url = Algo[algo_type]["train"];
         train_randomly_url = Algo[algo_type]["trainRandomly"];
         return _getRecentModel();
@@ -29,7 +29,7 @@ exports.Model = function (algo_type, tag, event_label) {
 
     var _getRecentModel = function () {
         var promise = new AV.Promise();
-        return Algo[algo_type]["getModel"](_tag, _e_label).then(
+        return Algo[algo_type]["getModel"](_tag, _label).then(
             function (model) {
                 _model = model["model"];
                 _config = model["config"];
@@ -48,13 +48,13 @@ exports.Model = function (algo_type, tag, event_label) {
     var _updateModel = function (description) {
         //console.log("update");
         //console.log('untreated data content is:\n' + JSON.stringify(_model, null, 4));
-        return Algo[algo_type]["updateModel"](_tag, _e_label, _model, _config, description);
+        return Algo[algo_type]["updateModel"](_tag, _label, _model, _config, description);
     };
 
-    var _initModel = function (tag, event_label, init_model) {
+    var _initModel = function (tag, label, init_model) {
         // Init private members.
         _tag = tag;
-        _e_label = event_label;
+        _label = label;
 
         var description = "It's initiation of this model.";
         return dao_config.getConfig().then(
@@ -66,7 +66,7 @@ exports.Model = function (algo_type, tag, event_label) {
                     "soundType": config[config["log_type"]["sound"]],
                     "locationType": config[config["log_type"]["location"]]
                 };
-                return Algo[algo_type]["initModel"](tag, event_label, init_model, model_config, description);
+                return Algo[algo_type]["initModel"](tag, label, init_model, model_config, description);
             },
             function (error) {
                 return AV.Promise.error(error);
@@ -103,7 +103,7 @@ exports.Model = function (algo_type, tag, event_label) {
     };
 
     var _trainRandomly = function (obs_length, obs_count, event_prob_map, n_iter) {
-        data["obsEvent"] = _e_label;
+        data["obsEvent"] = _label;
         data["obsLength"] = obs_length;
         data["obsCount"] = obs_count;
         data["model"]["nIter"] = n_iter;
