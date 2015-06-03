@@ -107,19 +107,12 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
 };
 
 exports.initModelParams = function (algo_type, tag, event_label){
-    var promise = new AV.Promise();
+    //var promise = new AV.Promise();
     var Model = new m.Model(algo_type, tag, event_label);
     //var init_params = config.InitParams[algo_type][event_label];
     var init_model = config.BehaviorInitParams[algo_type][event_label];
-    Model.initModel(tag, event_label, init_model).then(
-        function (model_id){
-            promise.resolve(model_id);
-        },
-        function (error){
-            promise.reject(error);
-        }
-    );
-    return promise;
+    return Model.initModel(tag, event_label, init_model);
+    //return promise;
 };
 
 

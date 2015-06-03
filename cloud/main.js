@@ -1,5 +1,6 @@
 var dao = require("cloud/dao/dao_model.js");
-var method = require("cloud/behavior.js");
+var behavior = require("cloud/behavior.js");
+var poi = require("cloud/poi.js");
 //var algo = require("cloud/algo/model.js");
 var config = require("cloud/config.js");
 var _ = require("underscore");
@@ -63,7 +64,7 @@ AV.Cloud.define("trainWithRandomObs", function (request, response) {
 
     var date = new Date();
 
-    method.trainWithRandomObs(algo_type, tag, event_label, obs_length, obs_count, description).then(
+    behavior.trainWithRandomObs(algo_type, tag, event_label, obs_length, obs_count, description).then(
         function (model_id){
             console.log(model_id);
             response.success({
@@ -90,7 +91,7 @@ AV.Cloud.define("trainWithSpecificObs", function (request, response) {
 
     var date = new Date();
 
-    method.trainWithSpecificObs(algo_type, tag, event_label, obs, description).then(
+    behavior.trainWithSpecificObs(algo_type, tag, event_label, obs, description).then(
         function (model_id){
             //console.log(model_id);
             response.success({
@@ -115,7 +116,7 @@ AV.Cloud.define("classifySingleSeq", function (request, response) {
         seq       = request.params.seq;
     var date = new Date();
 
-    method.classifySingleSeq(algo_type, tag, seq).then(
+    behavior.classifySingleSeq(algo_type, tag, seq).then(
         function (scores){
             response.success({
                 code: 0,
@@ -138,7 +139,7 @@ AV.Cloud.define("initModelParams", function (request, response) {
         event_label = request.params.eventLabel;
     var date = new Date();
 
-    method.initModelParams(algo_type, tag, event_label).then(
+    behavior.initModelParams(algo_type, tag, event_label).then(
         function (model_id){
             response.success({
                 code: 0,
@@ -164,7 +165,7 @@ AV.Cloud.define("initAllEventsModelParams", function (request, response) {
     var promises = [];
     var eventsInfo = config.InitParams[algo_type];
     _.keys(eventsInfo).forEach(function (event_label){
-        promises.push(method.initModelParams(algo_type, tag, event_label));
+        promises.push(behavior.initModelParams(algo_type, tag, event_label));
     });
     AV.Promise.all(promises).then(
         function (model_id_list){
@@ -195,7 +196,14 @@ AV.Cloud.define("classifyPois", function (request, response) {
 
 });
 
-
+poi.initModelParams("GMM", "for_testing_poi").then(
+    function (result){
+        console.log(result);
+    },
+    function (error){
+        console.log(error);
+    }
+);
 //dao.getRecentHMM("for_testing_poi", "poi").then(
 //    function (result){
 //        console.log(result);
@@ -204,3 +212,5 @@ AV.Cloud.define("classifyPois", function (request, response) {
 //        console.log(error);
 //    }
 //);
+
+
