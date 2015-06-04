@@ -8,10 +8,10 @@ var config = require("cloud/config.js");
 
 var Algo = config.Algo;
 
-exports.BehaviorClassifier = function (algo_type, tag, event_labels) {
+exports.BehaviorClassifier = function (algo_type, tag, labels) {
     var _Models = [],
         _tag = "",
-        _e_labels = [];
+        _labels = [];
 
     var classify_url = "";
 
@@ -20,7 +20,7 @@ exports.BehaviorClassifier = function (algo_type, tag, event_labels) {
         classify_url = Algo[algo_type]["classify"];
 
         var promises = [];
-        event_labels.forEach(function (event_label) {
+        labels.forEach(function (event_label) {
             promises.push(Algo[algo_type]["getModel"](_tag, event_label));
         });
 
@@ -30,7 +30,7 @@ exports.BehaviorClassifier = function (algo_type, tag, event_labels) {
                 models.forEach(function (model) {
                     if (model != undefined) {
                         _Models.push(model);
-                        _e_labels.push(model["eventLabel"]);
+                        _labels.push(model["label"]);
                     }
                 });
                 return AV.Promise.as("ok");
@@ -63,7 +63,7 @@ exports.BehaviorClassifier = function (algo_type, tag, event_labels) {
                     var probs = body['result'];
                     var result = {};
                     for (var i = 0; i < probs.length; i++) {
-                        result[_e_labels[i]] = probs[i];
+                        result[_labels[i]] = probs[i];
                     }
                     promise.resolve(result);
                 }

@@ -126,7 +126,7 @@ exports.getRecentHMM = function (tag, label) {
                 };
                 var config = result.get("config");
                 var hmm = {
-                    "eventLabel": label,
+                    "label": label,
                     "description": description,
                     "timestamp": timestamp,
                     // Useful info.
@@ -168,7 +168,7 @@ exports.getRecentGMM = function (tag, label) {
                 };
                 var config = result.get("config");
                 var gmm = {
-                    "eventLabel": label,
+                    "label": label,
                     "description": description,
                     "timestamp": timestamp,
                     // Useful info.
@@ -235,7 +235,7 @@ exports.getRecentGMMHMM = function (tag, label) {
                 model["gmmParams"]["nMix"] = gmm["nMix"];
 
                 var gmmhmm = {
-                    "eventLabel": label,
+                    "label": label,
                     //"requestCount": request_count,
                     "gmmId": gmm_id,
                     "hmmId": hmm_id,
