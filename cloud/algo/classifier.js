@@ -8,7 +8,7 @@ var config = require("cloud/config.js");
 
 var Algo = config.Algo;
 
-exports.BehaviorClassifier = function (algo_type, tag, labels) {
+exports.Classifier = function (algo_type, tag, labels) {
     var _Models = [],
         _tag = "",
         _labels = [];

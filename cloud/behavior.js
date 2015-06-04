@@ -3,7 +3,7 @@
  */
 var dao_config = require("cloud/dao/dao_config.js");
 var m          = require("cloud/algo/model.js");
-var c          = require("cloud/algo/behavior_classifier.js");
+var c          = require("cloud/algo/classifier.js");
 var config     = require("cloud/config.js");
 var logger     = require("cloud/logger.js");
 
@@ -87,7 +87,7 @@ exports.classifySingleSeq = function (algo_type, tag, seq){
         function (config){
             //logger.info(config.logEventType.ret, "Retrieving config from senz.config.");
             var event_labels = config["events_type"];
-            Classifier = new c.BehaviorClassifier(algo_type, tag, event_labels);
+            Classifier = new c.Classifier(algo_type, tag, event_labels);
             return Classifier.configuration();
         },
         function (error){
