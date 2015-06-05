@@ -20,8 +20,8 @@ exports.Classifier = function (algo_type, tag, labels) {
         classify_url = Algo[algo_type]["classify"];
 
         var promises = [];
-        labels.forEach(function (event_label) {
-            promises.push(Algo[algo_type]["getModel"](_tag, event_label));
+        labels.forEach(function (label) {
+            promises.push(Algo[algo_type]["getModel"](_tag, label));
         });
 
         return AV.Promise.all(promises).then(
