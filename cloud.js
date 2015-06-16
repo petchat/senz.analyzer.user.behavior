@@ -149,7 +149,7 @@ AV.Cloud.define("trainWithPois", function (request, response) {
 AV.Cloud.define("predictPoi", function (request, response) {
   var algo_type = request.params.algoType,
       tag       = request.params.tag,
-      pois      = request.params.pois;
+      pois      = request.params.seq;
 
   var date = new Date();
 
