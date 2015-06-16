@@ -140,9 +140,31 @@ AV.Cloud.define("initAllEventsModelParams", function (request, response) {
   );
 });
 
-AV.Cloud.define("trainWithPois", function (request, response) {
-  var algo_type = request.params.algoType,
-      tag       = request.params.tag;
+AV.Cloud.define("trainWithSpecificPois", function (request, response) {
+  var algo_type   = request.params.algoType,
+      tag         = request.params.tag,
+      poi_label   = request.params.poiLabel,
+      obs         = request.params.obs,
+      description = request.params.description;
+
+    var date = new Date();
+
+    poi.trainWithSpecificPois(algo_type, tag, poi_label, obs, description).then(
+        function (model_id){
+            //console.log(model_id);
+            response.success({
+                code: 0,
+                modelId: model_id,
+                message: "Training successfully! at " + date
+            });
+        },
+        function (error){
+            response.error({
+                code: 1,
+                message: error
+            });
+        }
+    );
 
 });
 
@@ -152,7 +174,7 @@ AV.Cloud.define("predictPoi", function (request, response) {
       pois      = request.params.seq;
 
   var date = new Date();
-
+  console.log("fuck!");
   poi.predictPoi(algo_type, tag, pois).then(
       function (prob_list){
         response.success({
@@ -170,7 +192,7 @@ AV.Cloud.define("predictPoi", function (request, response) {
   );
 });
 
-AV.Cloud.define("trainWithPois", function (request, response) {
+AV.Cloud.define("initPoiModelParams", function (request, response) {
   var algo_type = request.params.algoType,
       tag       = request.params.tag;
   var date = new Date();
