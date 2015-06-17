@@ -10,4 +10,11 @@ export APP_ENV="prod"
 
 
 
+
+
+
+
+
+
+
 npm start
