@@ -34,7 +34,6 @@ app.use(function(req, res, next) {
 
 // 如果是开发环境，则将异常堆栈输出到页面，方便开发调试
 if (app.get('env') === 'development') {
-  console.log("It's development environment");
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
