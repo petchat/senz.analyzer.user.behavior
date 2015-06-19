@@ -2,6 +2,5 @@ export LC_APP_ID="opul84evxzbufv81wv9yu99x4fbdpf9xsmqsw1vlh54j03ez"
 export LC_APP_KEY="ok78ea9sia4lp72beomto6f92sm61354qa7no2lv5ztnbrun"
 export LC_APP_MASTER_KEY="mkhmmu4u97e9ko3vwyb0bl1k6gs5zbcy7990611oct39qp6c"
 export LC_APP_PORT=3000
-export APP_ENV="dev"
-
+export APP_ENV="test"
 npm start
