@@ -4,6 +4,8 @@ var poi      = require("./lib/poi.js");
 var config   = require("./lib/config.js");
 var _        = require("underscore");
 
+//AV.initialize(config.APP_ID, config.APP_KEY, config.MASTER_KEY);
+
 AV.Cloud.define("hello", function(request, response) {
   response.success("Hello world!");
 });
